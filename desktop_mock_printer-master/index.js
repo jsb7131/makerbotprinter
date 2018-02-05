@@ -54,13 +54,17 @@ io.on("connection", ws => {
         }
     });
 
-    setInterval(() => {
-        if(state.status === statuses.BUSY)
+    const sendMessages = setInterval(() => {
+        if (state.status === statuses.BUSY)
             state = update(state, statuses.BUSY);
         console.log(marshalState(state));
-        ws.broadcast.send(JSON.stringify(marshalState(state)));
-    },
-    1000);
+        ws.send(marshalState(state));
+    }, 1000);
+
+    ws.on("disconnect", () => {
+        clearInterval(sendMessages);
+        console.log('===== End status updates =====');
+    });
 });
 
 io.on("error", err => console.log(err));
