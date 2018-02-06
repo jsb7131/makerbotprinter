@@ -15,10 +15,11 @@ class AppComponent extends React.Component {
         <div className="notice">Please edit <code>src/components/Main.js</code> to get started!</div>
         <br/>
           <StatusControl>
-            {({printerMsg, buttonType, sendAction}) => (
+            {({printerMsg, buttonTypeLeft, buttonTypeRight, buttonRightClass, sendAction}) => (
           	  <div>
-	          	<h1>{ printerMsg }</h1>
-	          	<button onClick={sendAction}>{buttonType}</button>
+	          	<h1>{printerMsg}</h1>
+	          	<button onClick={() => sendAction(buttonTypeLeft)}>{buttonTypeLeft}</button>
+	          	<button className={buttonRightClass} onClick={() => sendAction(buttonTypeRight)}>{buttonTypeRight}</button>
 	          </div>
 	        )}  
           </StatusControl>

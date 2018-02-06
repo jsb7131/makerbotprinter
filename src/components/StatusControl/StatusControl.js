@@ -9,25 +9,31 @@ class StatusControl extends React.Component {
 		super(props);
 		this.state = {
 			printerMsg: '',
-			buttonType: '',
+			buttonTypeLeft: '',
+			buttonTypeRight: '',
+			buttonRightClass: '',
 		};
 
 		this.socket = io('ws://localhost:8080');
 		this.socket.on('message', (message) => {
-			console.log(message);
 			this.setState({printerMsg: JSON.stringify(message)});
-			this.setButtonType(message);
+			this.setButtonTypes(message);
 		});
 	};
 
-	setButtonType = msg => {
+	setButtonTypes = msg => {
 
-		if (msg.status.state === 'Idle')
-			this.setState({buttonType: 'PRINT'});
+		if (msg.current_process === undefined) {
+			this.setState({buttonTypeLeft: 'PRINT', buttonTypeRight: '', buttonRightClass: 'hide'});
+		} else {
+			let proc_methods = msg.current_process.process_methods;
+			this.setState({buttonTypeLeft: proc_methods[0], buttonTypeRight: proc_methods[1], buttonRightClass: ''});
+		};
+
 	};
 
-	sendAction = () => {
-		this.socket.send(this.state.buttonType);
+	sendAction = action => {
+		this.socket.send(action);
 	};
 
 	render () {
@@ -38,7 +44,9 @@ class StatusControl extends React.Component {
 
 		const {
 			printerMsg,
-			buttonType,
+			buttonTypeLeft,
+			buttonTypeRight,
+			buttonRightClass,
 		} = this.state;
 
 		const {
@@ -47,7 +55,9 @@ class StatusControl extends React.Component {
 
 		return renderChildren({
 			printerMsg,
-			buttonType,
+			buttonTypeLeft,
+			buttonTypeRight,
+			buttonRightClass,
 			sendAction,
 		});
 
