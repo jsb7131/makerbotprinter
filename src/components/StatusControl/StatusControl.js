@@ -2,32 +2,64 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 
-
 class StatusControl extends React.Component {
 
 	constructor(props) {
 		super(props);
+
 		this.state = {
-			printerMsg: '',
+			printerName: '',
+			printerModel: '',
+			printerStatus: '',
+			printerStep: '',
+			printerProgress: '',
+			printerElapsedTime: '',
+			printerTimeRemaining: '',
 			buttonTypeLeft: '',
 			buttonTypeRight: '',
-			buttonRightClass: '',
+			buttonLeftClass: 'hide',
+			buttonRightClass: 'hide',
 		};
 
 		this.socket = io('ws://localhost:8080');
+
 		this.socket.on('message', (message) => {
-			this.setState({printerMsg: JSON.stringify(message)});
-			this.setButtonTypes(message);
+			this.setStatus(message);
 		});
 	};
 
-	setButtonTypes = msg => {
+	setStatus = msg => {
 
 		if (msg.current_process === undefined) {
-			this.setState({buttonTypeLeft: 'PRINT', buttonTypeRight: '', buttonRightClass: 'hide'});
+			this.setState({
+				printerName: msg.name,
+				printerModel: msg.model,
+				printerStatus: msg.status.state,
+				printerStep: '',
+				printerProgress: '',
+				printerElapsedTime: '',
+				printerTimeRemaining: '',
+				buttonTypeLeft: 'PRINT',
+				buttonTypeRight: '',
+				buttonLeftClass: '',
+				buttonRightClass: 'hide',
+			});
 		} else {
+			let curr_proc = msg.current_process;
 			let proc_methods = msg.current_process.process_methods;
-			this.setState({buttonTypeLeft: proc_methods[0], buttonTypeRight: proc_methods[1], buttonRightClass: ''});
+			this.setState({
+				printerName: msg.name,
+				printerModel: msg.model,
+				printerStatus: msg.status.state,
+				printerStep: curr_proc.step,
+				printerProgress: curr_proc.progress,
+				printerElapsedTime: curr_proc.elapsed_time,
+				printerTimeRemaining: curr_proc.time_remaining,
+				buttonTypeLeft: proc_methods[0],
+				buttonTypeRight: proc_methods[1],
+				buttonLeftClass: '',
+				buttonRightClass: '',
+			});
 		};
 
 	};
@@ -43,9 +75,16 @@ class StatusControl extends React.Component {
 		} = this.props;
 
 		const {
-			printerMsg,
+			printerName,
+			printerModel,
+			printerStatus,
+			printerStep,
+			printerProgress,
+			printerElapsedTime,
+			printerTimeRemaining,
 			buttonTypeLeft,
 			buttonTypeRight,
+			buttonLeftClass,
 			buttonRightClass,
 		} = this.state;
 
@@ -54,9 +93,16 @@ class StatusControl extends React.Component {
 		} = this;
 
 		return renderChildren({
-			printerMsg,
+			printerName,
+			printerModel,
+			printerStatus,
+			printerStep,
+			printerProgress,
+			printerElapsedTime,
+			printerTimeRemaining,
 			buttonTypeLeft,
 			buttonTypeRight,
+			buttonLeftClass,
 			buttonRightClass,
 			sendAction,
 		});

@@ -2,6 +2,20 @@
 body {
   color: #fff;
   background: #222;
+  letter-spacing: 1px;
+}
+
+h3 {
+  color: rgb(89,215,115);
+}
+
+p {
+  text-align: left;
+  margin-left: 40px;
+}
+
+.index {
+  text-align: center;
 }
 
 .index img {
@@ -9,6 +23,7 @@ body {
   border-radius: 4px;
   background: #fff;
   display: block;
+
 }
 
 .index .notice {
@@ -22,4 +37,64 @@ body {
 
 .hide {
   display: none;
+}
+
+#ui-wrapper {
+  display: inline-block;
+  position: relative;
+  width: 600px;
+  height: 400px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  border-color: rgb(89,215,115);
+}
+
+#status-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px;
+}
+
+#buttons-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+}
+
+button {
+  color: rgb(89,215,115);
+  font-size: 16px;
+  background-color: transparent;
+  padding: 10px 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  border-color: rgb(89,215,115);
+  cursor: pointer;
+  line-height: 20px;
+  outline: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  margin-top: 15px;
+  margin-right: 20px;
+
+  position: relative;
+  left: 14px;
+  bottom: 3px;
+}
+
+button:hover {
+  background-color: rgb(89,215,115);
+  color: white;
+  border-color: white;
+}
+
+button:active {
+  color: rgba(0, 0, 0, .55);
+  background-color: rgb(89,215,115);
 }
