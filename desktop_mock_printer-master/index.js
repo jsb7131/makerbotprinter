@@ -58,11 +58,12 @@ io.on("connection", ws => {
         if (state.status === statuses.BUSY)
             state = update(state, statuses.BUSY);
         console.log(marshalState(state));
-        ws.send(marshalState(state));
+        ws.send(JSON.stringify(marshalState(state)));
     }, 1000);
 
     ws.on("disconnect", () => {
         clearInterval(sendMessages);
+        // state = update(state, statuses.CANCELED);
         console.log('===== End status updates =====');
     });
 });

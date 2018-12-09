@@ -2,7 +2,9 @@ require('normalize.css/normalize.css');
 require('styles/App.css');
 
 import React from 'react';
-import StatusControl from './StatusControl';
+import PrinterControl from './PrinterControl';
+import InfoDisplay from './InfoDisplay';
+import Buttons from './Buttons';
 
 let yeomanImage = require('../images/yeoman.png');
 
@@ -12,44 +14,35 @@ class AppComponent extends React.Component {
     return (
       <div className="index">
         <img src={yeomanImage} alt="Yeoman Generator" />
-          <StatusControl>
+          <PrinterControl>
             {({
-				printerName,
-				printerModel,
-				printerStatus,
-				printerStep,
-				printerProgress,
-				printerElapsedTime,
-				printerTimeRemaining,
-            	buttonTypeLeft,
-            	buttonTypeRight,
-            	buttonLeftClass,
-            	buttonRightClass,
-            	sendAction
+				printer,
+				status,
+				currentProcess,
+				processMethods,
+				hideClasses,
+				sendAction
             }) => (
           	  <div id="ui-wrapper">
-          	  	<div id="status-container">
-	          	  <h1 className={buttonLeftClass}>{printerName}</h1>
-	          	  <h3 className={buttonLeftClass}>{printerModel}</h3>
-	          	  <p className={buttonLeftClass}>Status: {printerStatus}</p>
-	          	  <p className={buttonRightClass}>Step: {printerStep}</p>
-	          	  <p className={buttonRightClass}>Progress: {printerProgress}%</p>
-	          	  <p className={buttonRightClass}>Time Elapsed: {printerElapsedTime / 1000} seconds</p>
-	          	  <p className={buttonRightClass}>Time Remaining: {printerTimeRemaining / 1000} seconds</p>
-          	    </div>
-          	    <div id="buttons-container">
-	          	  <button className={buttonLeftClass} onClick={() => sendAction(buttonTypeLeft)}>{buttonTypeLeft}</button>
-	          	  <button className={buttonRightClass} onClick={() => sendAction(buttonTypeRight)}>{buttonTypeRight}</button>
-	          	</div>  
+          	  	<InfoDisplay
+          	  		info={printer}
+          	  		statusState={status.state}
+          	  		currProc={currentProcess}
+          	  		classes={hideClasses}
+      	  		>
+      	  		</InfoDisplay>
+          	  	<Buttons
+          	  		action={sendAction}
+          	  		methods={processMethods}
+          	  		classes={hideClasses}
+      	  		>
+      	  		</Buttons>
 	          </div>
 	        )}  
-          </StatusControl>
+          </PrinterControl>
       </div>
     );
   }
 }
-
-AppComponent.defaultProps = {
-};
 
 export default AppComponent;
